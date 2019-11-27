@@ -1,21 +1,32 @@
 #!/usr/bin/env dash
 CMDLINE="root=UUID=7af9b993-b17e-4443-92e1-9a7000c96b44"
 EFI_STUB="/usr/lib/systemd/boot/efi/linuxx64.efi.stub"
+FALLBACK="yes"
+execdracut() {
+	local kver="${1}"
+	shift
+	local destfile="${1}"
+	shift
+	if test -f "${destfile}"; then
+		echo "Move ${destfile} to ${destfile}.old"
+		mv "${destfile}" "${destfile}.old"
+	fi
+	if ! dracut --kver "${kver}" --uefi --uefi-stub "${EFI_STUB}" --nolvmconf --nomdadmconf "${@}" --kernel-cmdline "${CMDLINE}" "${destfile}" > /dev/null; then
+		exit 1
+	fi
+}
 update() {
 	local kver="${1}"
 	local pkgbasefile="/usr/lib/modules/${kver}/pkgbase"
 	local pkgname=""
 	pkgname="$(cat "${pkgbasefile}")"
 	local destfile="/boot/EFI/Arch/${pkgname}.efi"
-	if test -f "${destfile}"; then
-		echo "Move ${destfile} to ${destfile}.old"
-		mv "${destfile}" "${destfile}.old"
-	fi
+	local fallbackdestfile="/boot/EFI/Arch/${pkgname}-fallback.efi"
 	echo "Update ${pkgname}: ${kver}"
-	if ! dracut --kver "${kver}" --uefi --uefi-stub "${EFI_STUB}" --nolvmconf --nomdadmconf --hostonly-cmdline --kernel-cmdline "${CMDLINE}" "${destfile}" > /dev/null; then
-		exit 1
+	execdracut "${kver}" "${destfile}" --hostonly --hostonly-cmdline
+	if ! test -z "${FALLBACK}"; then
+		execdracut "${kver}" "${fallbackdestfile}" --no-hostonly --hostonly-cmdline
 	fi
-	return 0
 }
 file_to_kver() {
 	local file="${1}"
