@@ -1,0 +1,14 @@
+[Trigger]
+Type = File
+Operation = Install
+Operation = Upgrade
+Target = usr/lib/modules/*/pkgbase
+Target = usr/bin/systemctl
+Target = usr/bin/dracut
+
+[Action]
+Description = Generate initrd with dracut
+# Depends = dracut
+When = PostTransaction
+Exec = /etc/pacman.d/scripts/dracut.sh
+NeedsTargets
