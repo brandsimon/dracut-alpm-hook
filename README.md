@@ -16,3 +16,7 @@ To rebuild all kernels, run
 To rebuild a specific kernel, run
 
 	echo usr/lib/modules/5.3.13-arch1-1/pkgbase | dash /path/to/dracut-script.sh
+
+## Configuration
+
+You can change the dracut options in the script file.
