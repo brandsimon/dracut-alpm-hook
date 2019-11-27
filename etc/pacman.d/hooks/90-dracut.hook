@@ -8,7 +8,9 @@ Target = usr/bin/dracut
 
 [Action]
 Description = Generate initrd with dracut
-# Depends = dracut
+Depends = dash
+Depends = dracut
+Depends = systemd
 When = PostTransaction
 Exec = /etc/pacman.d/scripts/dracut.sh
 NeedsTargets
