@@ -2,6 +2,7 @@
 CMDLINE="root=UUID=7af9b993-b17e-4443-92e1-9a7000c96b44"
 EFI_STUB="/usr/lib/systemd/boot/efi/linuxx64.efi.stub"
 FALLBACK="yes"
+SECUREBOOTFILES=""
 execdracut() {
 	local kver="${1}"
 	shift
@@ -13,6 +14,9 @@ execdracut() {
 	fi
 	if ! dracut --kver "${kver}" --uefi --uefi-stub "${EFI_STUB}" --nolvmconf --nomdadmconf "${@}" --kernel-cmdline "${CMDLINE}" "${destfile}"; then
 		exit 1
+	fi
+	if ! test -z "${SECUREBOOTFILES}"; then
+		sbsign --key "${SECUREBOOTFILES}/db.key" --cert "${SECUREBOOTFILES}/db.crt" --output "${destfile}" "${destfile}"
 	fi
 }
 update() {
