@@ -4,7 +4,14 @@ Operation = Install
 Operation = Upgrade
 Target = usr/lib/modules/*/pkgbase
 Target = usr/lib/systemd/boot/efi/linuxx64.efi.stub
-Target = usr/bin/dracut
+
+[Trigger]
+Type = Package
+Operation = Install
+Operation = Upgrade
+Target = dracut
+Target = intel-ucode
+Target = amd-ucode
 
 [Action]
 Description = Generate initrd with dracut

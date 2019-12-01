@@ -12,7 +12,7 @@ execdracut() {
 		echo "Move ${destfile} to ${destfile}.old"
 		mv "${destfile}" "${destfile}.old"
 	fi
-	if ! dracut --kver "${kver}" --uefi --uefi-stub "${EFI_STUB}" --nolvmconf --nomdadmconf "${@}" --kernel-cmdline "${CMDLINE}" "${destfile}"; then
+	if ! dracut --kver "${kver}" --early-microcode --uefi --uefi-stub "${EFI_STUB}" --nolvmconf --nomdadmconf "${@}" --kernel-cmdline "${CMDLINE}" "${destfile}"; then
 		exit 1
 	fi
 	if ! test -z "${SECUREBOOTFILES}"; then
