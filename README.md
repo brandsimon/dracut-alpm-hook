@@ -25,4 +25,9 @@ To rebuild a specific kernel, run
 
 ## Configuration
 
-You can change the dracut options in the script file.
+You can change options in the script file.
+
+	CMDLINE: cmdline to use
+	EFI_STUB: efi stub to use
+	FALLBACK: wether to create a fallback image (empty means no, everything else yes)
+	SECUREBOOTFILES: path to db.key and db.crt
