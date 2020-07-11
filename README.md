@@ -1,11 +1,17 @@
 # dracut-alpm-hook
 
 This provides hooks for alpm/pacman to build an initramfs with dracut on package update.
-To enable this hook, copy the files to the pacman directories.
 
 ## Dependencies
 
 	dash dracut systemd
+
+## Installation
+
+To enable this hook, copy the files to the pacman directories.
+
+	cp etc/pacman.d/hooks/90-dracut.hook /etc/pacman.d/hooks/90-dracut.hook
+	cp etc/pacman.d/scripts/dracut.sh /etc/pacman.d/scripts/dracut.sh
 
 ## Trigger build manually
 
